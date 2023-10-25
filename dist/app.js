@@ -29,19 +29,23 @@ class Calculadora {
     }
     adicionarAPilha(valor) {
         const ultimoItem = this.pilha[this.pilha.length - 1];
-        if (typeof valor === 'string' && !operadores.includes(valor)) {
-            if (typeof ultimoItem === 'string') {
-                this.pilha[this.pilha.length - 1] += valor.toString();
+        if (typeof valor === 'string' && operadores.includes(valor)) {
+            if (typeof ultimoItem === 'string' && operadores.includes(ultimoItem)) {
+                this.pilha[this.pilha.length - 1] = valor.toString();
             }
             else {
                 this.pilha.push(valor.toString());
             }
         }
-        else if (operadores.includes(valor.toString())) {
-            this.pilha.push(valor.toString());
-        }
-        else if (typeof valor === 'number') {
-            this.pilha.push(Number(valor.toString()));
+        else if (typeof valor === 'number' || typeof valor === 'string' && !operadores.includes(valor)) {
+            if (typeof ultimoItem === 'number') {
+                this.pilha[this.pilha.length - 1] = parseFloat(ultimoItem + valor.toString());
+                console.log(this.pilha[this.pilha.length - 1]);
+                console.log(valor);
+            }
+            else {
+                this.setarValor(Number(valor.toString()));
+            }
         }
         this.setarDisplay(this.pilha.join(' '));
         console.log(this.pilha);
@@ -152,3 +156,25 @@ class Calculadora {
     }
 }
 const calculadora = new Calculadora([]);
+const numeros = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ','];
+document.addEventListener("keydown", (event) => {
+    event.preventDefault();
+    if (event.key === "Enter") {
+        calculadora.calcular();
+    }
+    else if (event.key === "Delete") {
+        calculadora.limpar();
+    }
+    else if (numeros.includes(event.key)) {
+        calculadora.adicionarAPilha(event.key);
+    }
+    else if (operadores.includes(event.key)) {
+        calculadora.adicionarAPilha(event.key);
+    }
+    else if (event.key === "Backspace") {
+        calculadora.apagarDigito();
+    }
+    else if (event.key === "Delete") {
+        calculadora.limpar();
+    }
+});

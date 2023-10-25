@@ -51,7 +51,6 @@ class Calculadora {
         console.log(this.pilha);
     }
     
-    
     setarDisplay(valor: string): void {
         if (this.display) {
             this.display.value = valor;
