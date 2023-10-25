@@ -1,9 +1,3 @@
-const enumOperacoes = {
-    SOMA: '+',
-    SUBTRACAO: '-',
-    DIVISAO: '/',
-    MULTIPLICACAO: 'x'
-};
 const operadores = ['+', '-', 'x', '/'];
 class Calculadora {
     constructor(pilha, display) {
@@ -11,9 +5,11 @@ class Calculadora {
         this.display = display;
         this.pilha = pilha;
         this.display = document.querySelector('.display-input');
-        if (this.display.value === '' && this.pilha.length === 0) {
-            this.display.value = '0';
-            this.pilha.push(0);
+        if (this.display) {
+            return;
+        }
+        else {
+            alert('Erro ao carregar a calculadora');
         }
     }
     setarOperador(operador) {
@@ -29,31 +25,26 @@ class Calculadora {
     }
     setarValor(valor) {
         this.pilha.push(valor);
+        console.log(valor);
     }
     adicionarAPilha(valor) {
         const ultimoItem = this.pilha[this.pilha.length - 1];
-        if (typeof valor === 'string' && operadores.includes(valor)) {
-            if (typeof ultimoItem === 'string' && operadores.includes(ultimoItem)) {
-                this.pilha[this.pilha.length - 1] = valor;
+        if (typeof valor === 'string' && !operadores.includes(valor)) {
+            if (typeof ultimoItem === 'string') {
+                this.pilha[this.pilha.length - 1] += valor.toString();
             }
             else {
-                this.pilha.push(valor);
+                this.pilha.push(valor.toString());
             }
         }
-        else if (typeof valor === 'number' || typeof valor === 'string' && !operadores.includes(valor)) {
-            if (typeof ultimoItem === 'number') {
-                this.pilha[this.pilha.length - 1] = parseFloat(ultimoItem + valor.toString());
-            }
-            else {
-                this.setarValor(Number(valor));
-            }
+        else if (operadores.includes(valor.toString())) {
+            this.pilha.push(valor.toString());
         }
-        const displayValue = this.pilha.join(' ');
-        this.setarDisplay(displayValue);
+        else if (typeof valor === 'number') {
+            this.pilha.push(Number(valor.toString()));
+        }
+        this.setarDisplay(this.pilha.join(' '));
         console.log(this.pilha);
-    }
-    limparPilha() {
-        this.pilha = [];
     }
     setarDisplay(valor) {
         if (this.display) {
@@ -68,11 +59,6 @@ class Calculadora {
     }
     getarPilha() {
         return this.pilha;
-    }
-    limparDisplay() {
-        if (this.display) {
-            this.display.value = '';
-        }
     }
     calcular() {
         const memoriaTemporaria = [];
@@ -92,14 +78,18 @@ class Calculadora {
                         }
                         else if (tempOperador === '/') {
                             if (elemento === 0) {
-                                this.limparPilha();
+                                this.pilha = [];
                                 this.setarDisplay('Não é possivel dividir por 0');
                                 setTimeout(() => { this.setarDisplay(''); }, 2000);
                                 return;
                             }
-                            tempOperando /= elemento;
+                            else {
+                                tempOperando /= elemento;
+                            }
                         }
-                        tempOperador = null;
+                        else {
+                            tempOperador = null;
+                        }
                     }
                 }
             }
@@ -127,19 +117,19 @@ class Calculadora {
             }
         }
         if (isNaN(resultado)) {
-            this.limparPilha();
-            this.setarDisplay('Não é possivel dividir por 0');
+            this.pilha = [];
+            this.setarDisplay('Resultado inválido :(');
             setTimeout(() => { this.setarDisplay(''); }, 2000);
             return;
         }
-        this.limparPilha();
+        this.pilha = [];
         this.setarValor(resultado);
-        this.setarDisplay(resultado.toString());
+        this.setarDisplay(resultado.toString().replace('.', ','));
         console.log(`RESULTADO: ${resultado}`);
     }
     limpar() {
-        this.limparPilha();
-        this.limparDisplay();
+        this.pilha = [];
+        this.display.value = '';
         console.clear();
     }
     mudarSinal() {
@@ -162,25 +152,3 @@ class Calculadora {
     }
 }
 const calculadora = new Calculadora([]);
-const numeros = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ','];
-document.addEventListener("keydown", function (event) {
-    event.preventDefault();
-    if (event.key === "Enter") {
-        calculadora.calcular();
-    }
-    else if (event.key === "Delete") {
-        calculadora.limpar();
-    }
-    else if (numeros.includes(event.key)) {
-        calculadora.adicionarAPilha(event.key);
-    }
-    else if (operadores.includes(event.key)) {
-        calculadora.adicionarAPilha(event.key);
-    }
-    else if (event.key === "Backspace") {
-        calculadora.apagarDigito();
-    }
-    else if (event.key === "Delete") {
-        calculadora.limpar();
-    }
-});

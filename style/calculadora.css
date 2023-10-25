@@ -35,6 +35,10 @@ body {
     outline: none;
 }
 
+.display-input::placeholder{
+    color: #F9F5F6;
+}
+
 .calculadora {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
