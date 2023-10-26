@@ -1,4 +1,5 @@
 const operadores = ['+', '-', 'x', '/'];
+const operadoresPrioritarios = ['x', '/'];
 class Calculadora {
     constructor(pilha, display) {
         this.pilha = pilha;
@@ -12,6 +13,9 @@ class Calculadora {
             alert('Erro ao carregar a calculadora');
         }
     }
+    setarValor(valor) {
+        this.pilha.push(parseFloat(valor.toString().replace('.', ',')));
+    }
     setarOperador(operador) {
         if (this.pilha.length > 0) {
             const ultimoItem = this.pilha[this.pilha.length - 1];
@@ -23,50 +27,59 @@ class Calculadora {
             }
         }
     }
-    setarValor(valor) {
-        this.pilha.push(valor);
-        console.log(valor);
-    }
-    adicionarAPilha(valor) {
-        const ultimoItem = this.pilha[this.pilha.length - 1];
-        if (typeof valor === 'string' && operadores.includes(valor)) {
-            if (typeof ultimoItem === 'string' && operadores.includes(ultimoItem)) {
-                this.pilha[this.pilha.length - 1] = valor.toString();
-            }
-            else {
-                this.pilha.push(valor.toString());
-            }
-        }
-        else if (typeof valor === 'number' || typeof valor === 'string' && !operadores.includes(valor)) {
-            if (typeof ultimoItem === 'number') {
-                this.pilha[this.pilha.length - 1] = parseFloat(ultimoItem + valor.toString());
-                console.log(this.pilha[this.pilha.length - 1]);
-                console.log(valor);
-            }
-            else {
-                this.setarValor(Number(valor.toString()));
-            }
-        }
-        this.setarDisplay(this.pilha.join(' '));
-        console.log(this.pilha);
-    }
     setarDisplay(valor) {
         if (this.display) {
             this.display.value = valor;
         }
     }
-    getarDisplay() {
-        if (this.display) {
-            return this.display.value;
+    adicionarAPilha(valor) {
+        const ultimoItem = this.pilha[this.pilha.length - 1];
+        if (typeof valor === 'string' && valor === ',') {
+            if (typeof ultimoItem === 'number') {
+                this.pilha[this.pilha.length - 1] = ultimoItem.toString() + '.';
+            }
+            else if (typeof ultimoItem === 'string' && ultimoItem.includes('.')) {
+                return;
+            }
+            else {
+                this.pilha.push('0.');
+            }
         }
-        return;
-    }
-    getarPilha() {
-        return this.pilha;
+        else if (typeof valor === 'string' && operadores.includes(valor)) {
+            if (this.pilha.length === 0) {
+                return;
+            }
+            if (operadores.includes(ultimoItem)) {
+                this.setarOperador(valor.toString());
+            }
+            else {
+                this.pilha.push(valor.toString());
+            }
+        }
+        else if (typeof valor === 'number') {
+            if (typeof ultimoItem === 'number') {
+                this.pilha[this.pilha.length - 1] = parseFloat(ultimoItem.toString() + valor.toString());
+            }
+            else {
+                this.setarValor(valor);
+            }
+        }
+        else if (typeof valor === 'string' && !operadores.includes(valor)) {
+            const numeroComVirgula = parseFloat(valor.replace(',', '.'));
+            if (!isNaN(numeroComVirgula)) {
+                if (typeof ultimoItem === 'number') {
+                    this.pilha[this.pilha.length - 1] = parseFloat(ultimoItem.toString() + numeroComVirgula.toString());
+                }
+                else {
+                    this.setarValor(numeroComVirgula);
+                }
+            }
+        }
+        this.setarDisplay(this.pilha.join(' ').replace('.', ','));
+        console.log(this.pilha);
     }
     calcular() {
         const memoriaTemporaria = [];
-        const operadoresPrioritarios = ['x', '/'];
         const operadoresNormais = ['+', '-'];
         let tempOperador = null;
         let tempOperando = null;
@@ -83,7 +96,7 @@ class Calculadora {
                         else if (tempOperador === '/') {
                             if (elemento === 0) {
                                 this.pilha = [];
-                                this.setarDisplay('Não é possivel dividir por 0');
+                                this.setarDisplay('Não é possível dividir por 0');
                                 setTimeout(() => { this.setarDisplay(''); }, 2000);
                                 return;
                             }
@@ -109,27 +122,29 @@ class Calculadora {
         if (tempOperando !== null) {
             memoriaTemporaria.push(tempOperando);
         }
-        let resultado = memoriaTemporaria[0];
-        for (let i = 1; i < memoriaTemporaria.length; i += 2) {
-            const operador = memoriaTemporaria[i];
-            const operando = memoriaTemporaria[i + 1];
-            if (operador === '+') {
-                resultado += operando;
+        if (this.pilha.length > 0) {
+            let resultado = memoriaTemporaria[0];
+            for (let i = 1; i < memoriaTemporaria.length; i += 2) {
+                const operador = memoriaTemporaria[i];
+                const operando = memoriaTemporaria[i + 1];
+                if (operador === '+') {
+                    resultado += operando;
+                }
+                else if (operador === '-') {
+                    resultado -= operando;
+                }
             }
-            else if (operador === '-') {
-                resultado -= operando;
+            if (isNaN(resultado)) {
+                this.pilha = [];
+                this.setarDisplay('Resultado inválido :(');
+                setTimeout(() => { this.setarDisplay(''); }, 2000);
+                return;
             }
-        }
-        if (isNaN(resultado)) {
             this.pilha = [];
-            this.setarDisplay('Resultado inválido :(');
-            setTimeout(() => { this.setarDisplay(''); }, 2000);
-            return;
+            this.setarValor(resultado);
+            this.setarDisplay(resultado.toString().replace('.', ','));
+            console.log(`RESULTADO: ${resultado}`.replace('.', ','));
         }
-        this.pilha = [];
-        this.setarValor(resultado);
-        this.setarDisplay(resultado.toString().replace('.', ','));
-        console.log(`RESULTADO: ${resultado}`);
     }
     limpar() {
         this.pilha = [];
@@ -151,30 +166,48 @@ class Calculadora {
         }
     }
     apagarDigito() {
-        this.display.value = this.display.value.slice(0, -1);
-        this.pilha.pop();
+        if (this.pilha.length > 0) {
+            const ultimoItem = this.pilha[this.pilha.length - 1];
+            if (typeof ultimoItem === 'number') {
+                const numeroComoString = ultimoItem.toString();
+                if (numeroComoString.length > 1) {
+                    const novoNumeroComoString = numeroComoString.slice(0, -1);
+                    this.pilha[this.pilha.length - 1] = parseFloat(novoNumeroComoString);
+                }
+                else {
+                    this.pilha.pop();
+                }
+            }
+            else if (typeof ultimoItem === 'string' && ultimoItem.length > 1) {
+                this.pilha[this.pilha.length - 1] = ultimoItem.slice(0, -1);
+            }
+            else {
+                this.pilha.pop();
+            }
+            this.setarDisplay(this.pilha.join(' '));
+        }
     }
 }
 const calculadora = new Calculadora([]);
 const numeros = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ','];
-document.addEventListener("keydown", (event) => {
-    event.preventDefault();
-    if (event.key === "Enter") {
+document.addEventListener("keydown", (evento) => {
+    evento.preventDefault();
+    if (evento.key === "Enter") {
         calculadora.calcular();
     }
-    else if (event.key === "Delete") {
+    else if (evento.key === "Delete") {
         calculadora.limpar();
     }
-    else if (numeros.includes(event.key)) {
-        calculadora.adicionarAPilha(event.key);
+    else if (numeros.includes(evento.key)) {
+        calculadora.adicionarAPilha(evento.key);
     }
-    else if (operadores.includes(event.key)) {
-        calculadora.adicionarAPilha(event.key);
+    else if (operadores.includes(evento.key)) {
+        calculadora.adicionarAPilha(evento.key);
     }
-    else if (event.key === "Backspace") {
+    else if (evento.key === "Backspace") {
         calculadora.apagarDigito();
     }
-    else if (event.key === "Delete") {
+    else if (evento.key === "Delete") {
         calculadora.limpar();
     }
 });
