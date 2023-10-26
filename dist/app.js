@@ -14,7 +14,7 @@ class Calculadora {
         }
     }
     setarValor(valor) {
-        this.pilha.push(parseFloat(valor.toString().replace('.', ',')));
+        this.pilha.push(valor);
     }
     setarOperador(operador) {
         if (this.pilha.length > 0) {
@@ -34,18 +34,7 @@ class Calculadora {
     }
     adicionarAPilha(valor) {
         const ultimoItem = this.pilha[this.pilha.length - 1];
-        if (typeof valor === 'string' && valor === ',') {
-            if (typeof ultimoItem === 'number') {
-                this.pilha[this.pilha.length - 1] = ultimoItem.toString() + '.';
-            }
-            else if (typeof ultimoItem === 'string' && ultimoItem.includes('.')) {
-                return;
-            }
-            else {
-                this.pilha.push('0.');
-            }
-        }
-        else if (typeof valor === 'string' && operadores.includes(valor)) {
+        if (typeof valor === 'string' && operadores.includes(valor)) {
             if (this.pilha.length === 0) {
                 return;
             }
