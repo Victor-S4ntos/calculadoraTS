@@ -58,6 +58,7 @@ class Calculadora {
             }
         }
         this.setarDisplay(this.pilha.join(' '));
+        console.log(this.pilha);
     }
     calcular() {
         const memoriaTemporaria = [];
@@ -121,9 +122,11 @@ class Calculadora {
                 return;
             }
             this.pilha = [];
-            this.setarValor(resultado);
+            this.setarValor(resultado.toString().replace('.', ','));
             this.setarDisplay(resultado.toString().replace('.', ','));
             console.log(`RESULTADO: ${resultado}`.replace('.', ','));
+            console.log(this.pilha);
+            console.log(memoriaTemporaria);
         }
     }
     limpar() {

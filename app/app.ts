@@ -20,7 +20,7 @@ class Calculadora {
         }
     }
 
-    private setarValor(valor: number): void {
+    private setarValor(valor: number | string): void {
         this.pilha.push(valor);
     }
 
@@ -60,6 +60,7 @@ class Calculadora {
         }
     
         this.setarDisplay(this.pilha.join(' '));
+        console.log(this.pilha)
     }
     
     public calcular() {
@@ -123,11 +124,13 @@ class Calculadora {
             }
     
             this.pilha = [];
-            this.setarValor(resultado);
-            this.setarDisplay(resultado.toString().replace('.', ','));
+            this.setarValor(resultado.toString().replace('.', ',')); 
+            this.setarDisplay(resultado.toString().replace('.', ',')); 
             console.log(`RESULTADO: ${resultado}`.replace('.', ','));
+            console.log(this.pilha)
+            console.log(memoriaTemporaria)
         }
-    }
+    }    
     
     public limpar(): void {
         this.pilha = [];
