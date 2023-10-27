@@ -124,7 +124,6 @@ class Calculadora {
             this.setarValor(resultado);
             this.setarDisplay(resultado.toString().replace('.', ','));
             console.log(`RESULTADO: ${resultado}`.replace('.', ','));
-            console.log(memoriaTemporaria);
         }
     }
     limpar() {
