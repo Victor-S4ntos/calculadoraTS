@@ -1,105 +1,128 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #e5e5e5;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
-}
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&display=swap');
+* {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #e5e5e5;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
+    
+    header {
+        text-align: center;
+        padding: 10px;
+        width: 100%;
+        margin-bottom: 7em;
+        padding-bottom: 2em;
 
-.calculator {
-    width: 500px;
-    background-color: #d9d9d9;
-    border: 2px solid #bbb;
-    border-radius: 20px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-}
-
-.display {
-    text-align: right;
-    padding: 20px;
-    background-color: #444;
-    font-size: 30px;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-}
-
-.display-input {
-    width: 100%;
-    border: none;
-    background: none;
-    color: #fff;
-    font-size: 30px;
-    text-align: center; 
-    outline: none;
-}
-
-.display-input::placeholder{
-    color: #F9F5F6;
-}
-
-.calculadora {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 15px;
-    padding: 30px;
-}
-
-.botao {
-    padding: 20px;
-    font-size: 20px;
-    border: none;
-    border-radius: 15px;
-    cursor: pointer;
-}
-
-.numero {
-    background-color: #c1c1c1;
-}
-
-.operador {
-    background-color: #e57500;
-    color: #fff;
-}
-
-.limpar {
-    background-color: #e53a3a;
-    color: #fff;
-}
-
-limpar:hover {
-    background-color: #ff2c2c;
-}
-
-.igual {
-    background-color: #29a29a;
-    color: #fff;
-}
-
-.botao:hover {
-    background-color: gray;
-}
-
-.apagar {
-    background-color: gray; 
-    color: #fff;
-    padding: 15px 30px;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-.apagar:hover {
-    background-color: #7D7C7C;
-}
-
-.negativar {
-    background-color: #7D7C7C; 
-    color: #fff;
-    padding: 15px 30px;
-    border: none;
-    font-size: 16px;
-    cursor: pointer;
-    font-size: 1.4rem;
-}
+    }
+    
+    header h1 {
+        color: #000;
+        font-size: 40px;
+        padding-top: 1em;
+        font-family: 'Montserrat', sans-serif;
+    }
+    
+    .calculator {
+        width: 500px;
+        background-color: #d9d9d9;
+        border: 2px solid #bbb;
+        border-radius: 20px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+    
+    .display {
+        text-align: right;
+        padding: 20px;
+        background-color: #444;
+        font-size: 30px;
+        border-top-left-radius: 20px;
+        border-top-right-radius: 20px;
+    }
+    
+    .display-input {
+        width: 100%;
+        border: none;
+        background: none;
+        color: #fff;
+        font-size: 30px;
+        text-align: center; 
+        outline: none;
+    }
+    
+    .display-input::placeholder {
+        color: #F9F5F6;
+    }
+    
+    .calculadora {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        padding: 30px;
+    }
+    
+    .botao {
+        padding: 20px;
+        font-size: 20px;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+    }
+    
+    .numero {
+        background-color: #c1c1c1;
+    }
+    
+    .operador {
+        background-color: #e57500;
+        color: #fff;
+    }
+    
+    .limpar {
+        background-color: #e53a3a;
+        color: #fff;
+    }
+    
+    .limpar:hover {
+        background-color: #ff2c2c;
+    }
+    
+    .igual {
+        background-color: #29a29a;
+        color: #fff;
+    }
+    
+    .botao:hover {
+        background-color: gray;
+    }
+    
+    .apagar {
+        background-color: gray; 
+        color: #fff;
+        padding: 15px 30px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    
+    .apagar:hover {
+        background-color: #7D7C7C;
+    }
+    
+    .negativar {
+        background-color: #7D7C7C; 
+        color: #fff;
+        padding: 15px 30px;
+        border: none;
+        font-size: 16px;
+        cursor: pointer;
+        font-size: 1.4rem;
+    }

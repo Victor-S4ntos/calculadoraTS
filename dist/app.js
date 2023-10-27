@@ -1,5 +1,11 @@
-const operadores = ['+', '-', '*', '/'];
-const operadoresPrioritarios = ['*', '/'];
+const enumaradorDasOperacoes = {
+    ADICAO: '+',
+    SUBTRACAO: '-',
+    MULTIPLICACAO: 'x',
+    DIVISAO: '/'
+};
+const operadores = ['+', '-', 'x', '/'];
+const operadoresPrioritarios = ['x', '/'];
 const operadoresNormais = ['+', '-'];
 class Calculadora {
     constructor(pilha, display) {
@@ -51,7 +57,6 @@ class Calculadora {
                 }
             }
         }
-        console.log(this.pilha);
         this.setarDisplay(this.pilha.join(' '));
     }
     calcular() {
@@ -65,10 +70,10 @@ class Calculadora {
                 }
                 else {
                     if (tempOperador) {
-                        if (tempOperador === '*') {
+                        if (tempOperador === enumaradorDasOperacoes.MULTIPLICACAO) {
                             tempOperando = parseFloat(tempOperando.toString().replace(',', '.')) * parseFloat(elemento.toString().replace(',', '.'));
                         }
-                        else if (tempOperador === '/') {
+                        else if (tempOperador === enumaradorDasOperacoes.DIVISAO) {
                             if (parseFloat(elemento.toString().replace(',', '.')) === 0) {
                                 this.pilha = [];
                                 this.setarDisplay('Não é possível dividir por 0');
@@ -102,10 +107,10 @@ class Calculadora {
             for (let i = 1; i < memoriaTemporaria.length; i += 2) {
                 const operador = memoriaTemporaria[i];
                 const operando = memoriaTemporaria[i + 1];
-                if (operador === '+') {
+                if (operador === enumaradorDasOperacoes.ADICAO) {
                     resultado += parseFloat(operando.toString().replace(',', '.'));
                 }
-                else if (operador === '-') {
+                else if (operador === enumaradorDasOperacoes.SUBTRACAO) {
                     resultado -= parseFloat(operando.toString().replace(',', '.'));
                 }
             }
@@ -119,6 +124,7 @@ class Calculadora {
             this.setarValor(resultado);
             this.setarDisplay(resultado.toString().replace('.', ','));
             console.log(`RESULTADO: ${resultado}`.replace('.', ','));
+            console.log(memoriaTemporaria);
         }
     }
     limpar() {
