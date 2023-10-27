@@ -126,3 +126,14 @@
         cursor: pointer;
         font-size: 1.4rem;
     }
+
+    @media (max-width: 600px) {
+        .calculator {
+            width:  55vh;
+        }
+    
+        .apagar .imagem {
+            min-width: 25px; 
+            height: auto; 
+        }
+    }
