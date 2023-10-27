@@ -50,6 +50,9 @@ class Calculadora {
         else {
             if (typeof valor === 'string') {
                 if (typeof ultimoItem === 'string' && !operadores.includes(ultimoItem)) {
+                    if (ultimoItem.includes(',') && valor === ',') {
+                        return;
+                    }
                     this.pilha[this.pilha.length - 1] = `${ultimoItem}${valor}`;
                 }
                 else {
@@ -58,7 +61,6 @@ class Calculadora {
             }
         }
         this.setarDisplay(this.pilha.join(' '));
-        console.log(this.pilha);
     }
     calcular() {
         const memoriaTemporaria = [];

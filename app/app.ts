@@ -52,6 +52,11 @@ class Calculadora {
         } else {
             if (typeof valor === 'string') {
                 if (typeof ultimoItem === 'string' && !operadores.includes(ultimoItem)) {
+                    // Verificar se o último valor já contém uma vírgula e se o valor atual é uma vírgula
+                    if (ultimoItem.includes(',') && valor === ',') {
+                        return;
+                    }
+    
                     this.pilha[this.pilha.length - 1] = `${ultimoItem}${valor}`;
                 } else {
                     this.pilha.push(`${valor}`);
@@ -60,7 +65,6 @@ class Calculadora {
         }
     
         this.setarDisplay(this.pilha.join(' '));
-        console.log(this.pilha)
     }
     
     public calcular() {
