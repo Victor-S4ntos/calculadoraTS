@@ -63,7 +63,7 @@ class Calculadora {
                 }
             }
         }
-    
+        console.log(this.pilha)
         this.setarDisplay(this.pilha.join(' '));
     }
     
@@ -177,6 +177,7 @@ class Calculadora {
 
             this.setarDisplay(this.pilha.join(' '));
         }
+    console.log(this.pilha)   
     }
 }
 
